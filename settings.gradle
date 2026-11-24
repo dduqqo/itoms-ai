@@ -1,0 +1,7 @@
+rootProject.name = 'itoms-ai'
+
+include 'api-gateway',
+        'service-desk',
+        'ticket-core',
+        'user-service',
+        'service-request-management'
