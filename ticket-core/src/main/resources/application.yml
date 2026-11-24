@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: TicketCore
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: ${DDL_ENV}
+    open-in-view: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: ${LOGGER_LEVEL}
+          incident:
+            url: ${INCIDENT_URL}
+          service-request-management-client:
+            url: ${SERVICE_REQUEST_MANAGEMENT_URL}
+
+springdoc:
+  swagger-ui:
+    path: ${SWAGGER_PATH}/swagger-ui.html
+  api-docs:
+    path: ${SWAGGER_PATH}/api-docs
+
+cors:
+  allowed:
+    path: ${ALLOWED_PATH}
+    pattern: ${ALLOWED_PATTERN}
+    method: ${ALLOWED_METHOD}
+
