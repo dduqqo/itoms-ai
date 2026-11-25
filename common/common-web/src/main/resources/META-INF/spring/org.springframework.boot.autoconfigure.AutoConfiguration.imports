@@ -1,1 +1,2 @@
 com.capston_design.fkiller.itoms.common.web.SwaggerAutoConfiguration
+com.capston_design.fkiller.itoms.common.web.CorsAutoConfiguration
