@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "user-service", url = "${USER_SERVICE_URL}")
 public interface UserServiceClient {
 
-    @GetMapping("/api/user/randomMember")
+    @GetMapping("/api/user/randomCreator")
     ApiResponse<CreatorInfoResponseDTO> getRandomCreatorInfo();
 }
