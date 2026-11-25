@@ -1,0 +1,20 @@
+# 테스트용 설정 (@ActiveProfiles("test")). DB는 H2 메모리 DB, 외부 서비스는 연결하지 않는다.
+spring:
+  # Kafka 설정을 코드에서 직접 만들어서 listener.auto-startup이 먹지 않는다. 아무것도 없는 포트를 가리켜 실제 브로커에 붙지 않게 한다.
+  kafka:
+    bootstrap-servers: localhost:1
+  datasource:
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: never   # data.sql은 MySQL 전용 함수(UUID_TO_BIN)를 쓴다
+DB_URL: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+DB_USER: sa
+DB_PASSWORD: ""
+DDL_ENV: create-drop
+SWAGGER_PATH: ""
+INCIDENT_URL: http://localhost:8080/api/incident
+USER_SERVICE_URL: http://localhost:8081
+ALLOWED_PATH: /**
+ALLOWED_PATTERN: http://localhost:*
+ALLOWED_METHOD: GET

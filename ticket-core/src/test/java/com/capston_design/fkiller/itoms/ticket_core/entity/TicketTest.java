@@ -20,7 +20,7 @@ class TicketTest {
 
         System.out.println("baseTicket.toString() = " + baseTicket.toString());
 
-        assertEquals("test_incident_id", baseTicket.getIncidentId());
+        assertEquals(incident_id, baseTicket.getIncidentId());
         assertEquals("test_requester_id", baseTicket.getRequesterId());
         assertEquals("test_requester_name", baseTicket.getRequesterName());
         assertNull(baseTicket.getCreatorId());

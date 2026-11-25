@@ -36,7 +36,7 @@
 | 관측 스택 수집 대상 | 7~8단계 | Prometheus는 service-desk, user-service만 수집한다. ticket-core, service-request-management, api-gateway는 대상과 actuator 노출 설정이 없다 |
 | 서비스별 DB 분리 | 미정 | 모든 서비스가 MySQL DB 하나를 함께 쓴다 (기존 운영 compose와 같음). 예전 `test.yaml` 주석에 서비스별 DB로 나누자는 계획이 있었다 |
 | ~~0단계 남은 정리~~ | **처리됨** (5단계) | `.DS_Store`·서비스별 ignore 파일 삭제. 평문 비밀번호는 이미 남아 있지 않았고, compose 비밀값은 `infra/.env`로 분리 |
-| 깨진 테스트 | 미정 | DB를 쓰는 서비스 4곳의 `contextLoads`는 DB·환경변수가 없으면 실패한다(테스트용 DB 설정 필요: H2 또는 Testcontainers). ticket-core `TicketTest`는 테스트 코드 버그(랜덤 UUID를 고정 문자열과 비교). 전환 전부터 깨져 있었다 ([build-baseline.md](build-baseline.md)) |
+| ~~깨진 테스트~~ | **처리됨** (6단계 전, H2 테스트 프로필 + `TicketTest` 수정. `./gradlew build` 통과) | DB를 쓰는 서비스 4곳의 `contextLoads`는 DB·환경변수가 없으면 실패한다(테스트용 DB 설정 필요: H2 또는 Testcontainers). ticket-core `TicketTest`는 테스트 코드 버그(랜덤 UUID를 고정 문자열과 비교). 전환 전부터 깨져 있었다 ([build-baseline.md](build-baseline.md)) |
 
 ---
 
