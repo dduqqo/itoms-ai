@@ -1,3 +1,5 @@
+server:
+  port: ${SERVER_PORT:8083}
 spring:
   # 비동기(@Async) 스레드 풀. Spring Boot 기본 실행기 설정 (기존 AsyncConfig와 같은 값)
   task:
