@@ -29,4 +29,10 @@ class HttpServiceClientsTest {
         assertThat(client.hello()).isEqualTo("hi");
         server.verify();
     }
+
+    @Test
+    void 스킴이_없는_주소에는_http를_붙인다() {
+        assertThat(HttpServiceClients.withScheme("user-service:8080")).isEqualTo("http://user-service:8080");
+        assertThat(HttpServiceClients.withScheme("https://user-service")).isEqualTo("https://user-service");
+    }
 }

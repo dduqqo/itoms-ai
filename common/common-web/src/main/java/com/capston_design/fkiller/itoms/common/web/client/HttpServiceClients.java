@@ -14,9 +14,14 @@ public final class HttpServiceClients {
     }
 
     public static <T> T create(RestClient.Builder builder, String baseUrl, Class<T> clientType) {
-        RestClient restClient = builder.clone().baseUrl(baseUrl).build();
+        RestClient restClient = builder.clone().baseUrl(withScheme(baseUrl)).build();
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient))
                 .build()
                 .createClient(clientType);
+    }
+
+    // Feign과 같이 스킴이 없으면 http://를 붙인다. (기존 환경변수가 "host:port" 형식일 수 있음)
+    static String withScheme(String baseUrl) {
+        return baseUrl.contains("://") ? baseUrl : "http://" + baseUrl;
     }
 }

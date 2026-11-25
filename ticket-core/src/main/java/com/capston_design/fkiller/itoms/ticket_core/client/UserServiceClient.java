@@ -2,13 +2,10 @@ package com.capston_design.fkiller.itoms.ticket_core.client;
 
 import com.capston_design.fkiller.itoms.contracts.user.UserResponseDTO;
 import com.capston_design.fkiller.itoms.common.response.ApiResponse;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.service.annotation.GetExchange;
 
-@FeignClient(name = "user-service", url = "${USER_SERVICE_URL}")
 public interface UserServiceClient {
 
-    @GetMapping("/api/user/randomCreator")
+    @GetExchange("/api/user/randomCreator")
     ApiResponse<UserResponseDTO> getRandomCreatorInfo();
 }
