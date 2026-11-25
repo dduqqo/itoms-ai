@@ -1,0 +1,8 @@
+plugins {
+    id 'java-library'
+}
+
+// 서비스 사이를 오가는 DTO만 둔다. 엔티티·업무 로직·서비스 전용 enum은 넣지 않는다. (README 참고)
+dependencies {
+    api 'com.fasterxml.jackson.core:jackson-annotations'
+}

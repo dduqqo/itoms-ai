@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.user_service.client;
 
-import com.capston_design.fkiller.itoms.user_service.dto.RandomUserResponseDTO;
+import com.capston_design.fkiller.itoms.contracts.user.RandomUserResponseDTO;
 import com.capston_design.fkiller.itoms.user_service.model.User;
 import com.capston_design.fkiller.itoms.user_service.service.UserService;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,10 @@
 package com.capston_design.fkiller.itoms.service_desk.controller;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.TicketCompletedRequestDTO;
 import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.service_desk.converter.IncidentConverter;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentRequest;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentResponse;
-import com.capston_design.fkiller.itoms.service_desk.dto.TicketCompletedRequestDTO;
 import com.capston_design.fkiller.itoms.service_desk.model.Incident;
 import com.capston_design.fkiller.itoms.service_desk.service.IncidentKafkaService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class IncidentKafkaController {
     @PostMapping("/v1/ticket/complete")
     public ResponseEntity<ApiResponse<IncidentResponse.IncidentCreateResponseDTO>> completeIncidentKafka(
             @RequestBody TicketCompletedRequestDTO request) {
-        Incident incident = incidentKafkaService.completeIncidentKafka(request.ticketId(), request.incidentId());
+        Incident incident = incidentKafkaService.completeIncidentKafka(request.getTicketId(), request.getIncidentId());
         var responseDTO = IncidentConverter.toIncidentResponseDTO(incident);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ApiResponse.onSuccess(responseDTO));
     }

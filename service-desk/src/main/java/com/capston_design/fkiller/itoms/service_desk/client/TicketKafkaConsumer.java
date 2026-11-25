@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_desk.client;
 
-import com.capston_design.fkiller.itoms.service_desk.dto.CreateTicketResponseDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketResponseDTO;
 import com.capston_design.fkiller.itoms.service_desk.repository.IncidentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

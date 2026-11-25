@@ -1,7 +1,7 @@
 package com.capston_design.fkiller.itoms.service_request_management.service;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.TicketListRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.client.TicketCoreClient;
-import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.TicketListRequestDTO;
 import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
 import com.capston_design.fkiller.itoms.service_request_management.common.exception.SrErrorCode;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.completeTicketRequestDTO;

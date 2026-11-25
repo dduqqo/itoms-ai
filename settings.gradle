@@ -6,6 +6,8 @@ include 'common:common-core',
         'common:common-web',
         'common:common-observability'
 
+include 'contracts'
+
 include 'api-gateway',
         'service-desk',
         'ticket-core',

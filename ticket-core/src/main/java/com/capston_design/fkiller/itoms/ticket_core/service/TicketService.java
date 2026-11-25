@@ -1,10 +1,12 @@
 package com.capston_design.fkiller.itoms.ticket_core.service;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.user.UserResponseDTO;
 import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
 import com.capston_design.fkiller.itoms.ticket_core.common.exception.TicketErrorCode;
 import com.capston_design.fkiller.itoms.ticket_core.client.IncidentClient;
 import com.capston_design.fkiller.itoms.ticket_core.client.UserServiceClient;
-import com.capston_design.fkiller.itoms.ticket_core.client.dto.response.CreatorInfoResponseDTO;
 import com.capston_design.fkiller.itoms.common.core.time.ClockUtils;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.*;
 import com.capston_design.fkiller.itoms.ticket_core.common.ticket_status.annotation.UpdateTicketStatus;
@@ -45,8 +47,8 @@ public class TicketService {
                 request.getRequester().getRequesterName());
 
         // 임시로 담당자 랜덤 할당 -> 이후에 모델에게 요청하는 로직으로 변경
-        CreatorInfoResponseDTO randomCreatorInfo = userServiceClient.getRandomCreatorInfo().getResult();
-        initTicket.updateCreator(randomCreatorInfo.getId(), randomCreatorInfo.getName());
+        UserResponseDTO randomCreatorInfo = userServiceClient.getRandomCreatorInfo().getResult();
+        initTicket.updateCreator(randomCreatorInfo.getId().toString(), randomCreatorInfo.getName());
 
         return ticketRepository.save(initTicket).getId();
     }
@@ -88,7 +90,7 @@ public class TicketService {
     }
 
     @Transactional
-    public void updateTicketStatus(completeTicketRequestDTO request) {
+    public void updateTicketStatus(CompleteTicketRequestDTO request) {
         Ticket ticket = ticketRepository.findById(request.getTicketId())
                 .orElseThrow(() -> new GeneralException(TicketErrorCode.INVALID_TICKET));
         ticket.updateTicketStatus(TicketStatus.fromCodeName(request.getTicketStatus()));

@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.ticket_core.config;
 
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;

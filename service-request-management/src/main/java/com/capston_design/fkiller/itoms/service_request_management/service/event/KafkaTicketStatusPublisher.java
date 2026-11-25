@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_request_management.service.event;
 
-import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.UpdateTicketStatusRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTicketRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.service.dto.TicketStatusUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class KafkaTicketStatusPublisher {
     @Async
     @EventListener
     public void handleTicketStatusUpdateEvent(TicketStatusUpdateEvent event) {
-        UpdateTicketStatusRequestDTO dto = new UpdateTicketStatusRequestDTO(
+        CompleteTicketRequestDTO dto = new CompleteTicketRequestDTO(
                 event.getTicketId(), event.getTicketName(), event.getTicketStatus(), event.getCompletionTime());
         kafkaTemplate.send(ticketStatusUpdateTopic, event.getTicketId().toString(), dto);
         log.info("[Kafka] ticket status update event published. ticketId={} status={}", event.getTicketId(), event.getTicketStatus());

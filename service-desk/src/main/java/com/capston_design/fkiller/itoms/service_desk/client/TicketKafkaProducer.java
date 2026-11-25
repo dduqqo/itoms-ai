@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_desk.client;
 
-import com.capston_design.fkiller.itoms.service_desk.dto.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;

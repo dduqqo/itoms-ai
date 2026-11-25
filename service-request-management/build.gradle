@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(':contracts')
     implementation project(':common:common-core')
     implementation project(':common:common-jpa')
     implementation project(':common:common-observability')

@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_request_management.config;
 
-import com.capston_design.fkiller.itoms.service_request_management.service.dto.TicketCompletedMessage;
+import com.capston_design.fkiller.itoms.contracts.ticket.TicketCompletedRequestDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +26,8 @@ public class KafkaConsumerConfig {
     private String groupId;
 
     @Bean
-    public ConsumerFactory<String, TicketCompletedMessage> consumerFactory() {
-        JsonDeserializer<TicketCompletedMessage> valueDeserializer = new JsonDeserializer<>(TicketCompletedMessage.class, false);
+    public ConsumerFactory<String, TicketCompletedRequestDTO> consumerFactory() {
+        JsonDeserializer<TicketCompletedRequestDTO> valueDeserializer = new JsonDeserializer<>(TicketCompletedRequestDTO.class, false);
         valueDeserializer.addTrustedPackages("*");
 
         Map<String, Object> props = new HashMap<>();
@@ -40,8 +40,8 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TicketCompletedMessage> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TicketCompletedMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, TicketCompletedRequestDTO> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, TicketCompletedRequestDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }

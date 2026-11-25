@@ -1,5 +1,6 @@
 package com.capston_design.fkiller.itoms.user_service.controller;
 
+import com.capston_design.fkiller.itoms.contracts.user.UserResponseDTO;
 import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.user_service.converter.UserConverter;
 import com.capston_design.fkiller.itoms.user_service.dto.UserRequest;
@@ -27,21 +28,21 @@ public class UserController {
     }
 
     @GetMapping("/randomRequester")
-    public ResponseEntity<ApiResponse<UserResponse.UserRandomResponseDTO>> getRequesterUser(){
+    public ResponseEntity<ApiResponse<UserResponseDTO>> getRequesterUser(){
         User user = userService.getRandomRequesterUser();
         var responseDTO = UserConverter.toRandomUserResponseDTO(user);
         return ResponseEntity.ok(ApiResponse.onSuccess(responseDTO));
     }
 
     @GetMapping("/randomCreator")
-    public ResponseEntity<ApiResponse<UserResponse.UserRandomResponseDTO>> getCreatorUser(){
+    public ResponseEntity<ApiResponse<UserResponseDTO>> getCreatorUser(){
         User user = userService.getRandomCreatorUser();
         var responseDTO = UserConverter.toRandomUserResponseDTO(user);
         return ResponseEntity.ok(ApiResponse.onSuccess(responseDTO));
     }
 
     @GetMapping("/randomCharger")
-    public ResponseEntity<ApiResponse<UserResponse.UserRandomResponseDTO>> getChargerUser(){
+    public ResponseEntity<ApiResponse<UserResponseDTO>> getChargerUser(){
         User user = userService.getRandomChargerUser();
         var responseDTO = UserConverter.toRandomUserResponseDTO(user);
         return ResponseEntity.ok(ApiResponse.onSuccess(responseDTO));

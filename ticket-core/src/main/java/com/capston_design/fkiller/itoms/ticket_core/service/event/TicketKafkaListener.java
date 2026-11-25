@@ -1,7 +1,7 @@
 package com.capston_design.fkiller.itoms.ticket_core.service.event;
 
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.CreateTicketRequestDTO;
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.response.CreateTicketResponseDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketResponseDTO;
 import com.capston_design.fkiller.itoms.ticket_core.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class TicketKafkaListener {
     public void handleCreateTicket(CreateTicketRequestDTO request) {
         log.info("[Kafka] create ticket request received. incidentId={}", request.getIncidentId());
         UUID ticketId = ticketService.createTicket(request);
-        CreateTicketResponseDTO response = new CreateTicketResponseDTO(ticketId);
+        CreateTicketResponseDTO response = new CreateTicketResponseDTO(ticketId, request.getIncidentId());
         kafkaTemplate.send(ticketResponseTopic, request.getIncidentId().toString(), response);
         log.info("[Kafka] create ticket response sent. incidentId={}, ticketId={}", request.getIncidentId(), ticketId);
     }

@@ -1,8 +1,8 @@
 package com.capston_design.fkiller.itoms.service_request_management.client;
 
-import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.TicketListRequestDTO;
-import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.UpdateTaskStatusRequestDTO;
-import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.UpdateTicketStatusRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTaskRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.TicketListRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.client.dto.response.TicketInformationDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +19,8 @@ public interface TicketCoreClient {
 
     @PostMapping("/callback/v1/task/{taskId}/complete")
     void updateTaskStatus(@PathVariable UUID taskId,
-                          @RequestBody UpdateTaskStatusRequestDTO request);
+                          @RequestBody CompleteTaskRequestDTO request);
 
     @PostMapping("/callback/v1/ticket/complete")
-    void updateTicketStatus(@RequestBody  UpdateTicketStatusRequestDTO updateTicketStatusRequestDTO);
+    void updateTicketStatus(@RequestBody  CompleteTicketRequestDTO updateTicketStatusRequestDTO);
 }

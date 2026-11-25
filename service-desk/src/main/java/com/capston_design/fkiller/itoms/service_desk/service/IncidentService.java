@@ -1,5 +1,9 @@
 package com.capston_design.fkiller.itoms.service_desk.service;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketResponseDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.RequesterDTO;
+import com.capston_design.fkiller.itoms.contracts.user.UserResponseDTO;
 import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.service_desk.client.TicketClient;
 import com.capston_design.fkiller.itoms.service_desk.client.UserClient;
@@ -41,12 +45,12 @@ public class IncidentService {
         //String createrById = request.getHeader("X-User-Id");
         //String creater = request.getHeader("X-User-Name");
 
-        ApiResponse<UserCreateResponseDTO> userResponse = userClient.getRandomRequesterUser();
+        ApiResponse<UserResponseDTO> userResponse = userClient.getRandomRequesterUser();
         if (userResponse == null || !Boolean.TRUE.equals(userResponse.getIsSuccess())
                 || userResponse.getResult() == null) {
             throw new IllegalStateException("UserService로부터 랜덤 유저를 불러오지 못했습니다.");
         }
-        UserCreateResponseDTO user = userResponse.getResult();
+        UserResponseDTO user = userResponse.getResult();
 
         incident.setRequester(user.getName());
         incident.setRequesterById(user.getId());

@@ -1,10 +1,10 @@
 package com.capston_design.fkiller.itoms.service_desk.controller;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.TicketCompletedRequestDTO;
 import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.service_desk.converter.IncidentConverter;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentRequest;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentResponse;
-import com.capston_design.fkiller.itoms.service_desk.dto.TicketCompletedRequestDTO;
 import com.capston_design.fkiller.itoms.service_desk.model.Incident;
 import com.capston_design.fkiller.itoms.service_desk.service.IncidentService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class IncidentController {
     @PostMapping("/v1/ticket/complete")
     public ResponseEntity<ApiResponse<IncidentResponse.IncidentCreateResponseDTO>> completeIncident(
             @RequestBody TicketCompletedRequestDTO request) {
-        Incident incident = incidentService.completeTicket(request.ticketId(), request.incidentId());
+        Incident incident = incidentService.completeTicket(request.getTicketId(), request.getIncidentId());
         var responseDTO = IncidentConverter.toIncidentResponseDTO(incident);
         return ResponseEntity.ok(ApiResponse.onSuccess(responseDTO));
     }

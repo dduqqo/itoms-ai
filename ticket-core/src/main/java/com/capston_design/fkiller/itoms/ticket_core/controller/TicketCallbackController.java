@@ -1,7 +1,7 @@
 package com.capston_design.fkiller.itoms.ticket_core.controller;
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTaskRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTicketRequestDTO;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.AssignmentCallbackDTO;
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.completeTaskRequestDTO;
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.completeTicketRequestDTO;
 import com.capston_design.fkiller.itoms.ticket_core.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,14 +25,14 @@ public class TicketCallbackController
     }
 
     @PostMapping("/v1/task/{taskId}/complete")
-    public ResponseEntity<Void> loggingTaskStatusUpdate(@PathVariable UUID taskId, @RequestBody completeTaskRequestDTO request) {
+    public ResponseEntity<Void> loggingTaskStatusUpdate(@PathVariable UUID taskId, @RequestBody CompleteTaskRequestDTO request) {
         log.info("[태스크 완료 요청] - taskId={}, ticketId={}, taskName={}, taskNowStatus={}, [request time] - {}", request.getTicketId(),
                 taskId, request.getTaskName(), request.getTaskStatus(), request.getCompletionTime());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/v1/ticket/complete")
-    public ResponseEntity<Void> completeTicket(@RequestBody completeTicketRequestDTO request) {
+    public ResponseEntity<Void> completeTicket(@RequestBody CompleteTicketRequestDTO request) {
         ticketService.updateTicketStatus(request);
         return ResponseEntity.noContent().build();
     }

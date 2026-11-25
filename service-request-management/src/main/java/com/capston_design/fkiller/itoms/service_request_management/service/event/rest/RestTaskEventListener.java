@@ -1,7 +1,7 @@
 package com.capston_design.fkiller.itoms.service_request_management.service.event.rest;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.CompleteTaskRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.client.TicketCoreClient;
-import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.UpdateTaskStatusRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.service.dto.TaskStatusUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -17,7 +17,7 @@ public class RestTaskEventListener {
     @EventListener
     public void handleTaskStatusUpdateEvent(TaskStatusUpdateEvent event) {
         ticketCoreClient.updateTaskStatus(event.getTaskId(),
-                new UpdateTaskStatusRequestDTO(
+                new CompleteTaskRequestDTO(
                         event.getTicketId(),
                         event.getTaskName(),
                         event.getTaskStatus(),

@@ -1,10 +1,10 @@
 package com.capston_design.fkiller.itoms.ticket_core.controller;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketResponseDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.TicketListRequestDTO;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.AssignAcceptorRequestDTO;
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.CreateTicketRequestDTO;
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.TicketInfoRequestDTO;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.UpdateTicketInfoRequestDTO;
-import com.capston_design.fkiller.itoms.ticket_core.controller.dto.response.CreateTicketResponseDTO;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.response.TicketInfoResponseDTO;
 import com.capston_design.fkiller.itoms.ticket_core.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class TicketController {
     @PostMapping("/v1/ticket")
     public CreateTicketResponseDTO createTicket(@RequestBody CreateTicketRequestDTO request) {
         UUID ticketId = ticketService.createTicket(request);
-        return new CreateTicketResponseDTO(ticketId);
+        return new CreateTicketResponseDTO(ticketId, request.getIncidentId());
     }
     @PatchMapping("/v1/ticket/{ticketId}/assign")
     public ResponseEntity<Void> assignAcceptor(
@@ -45,7 +45,7 @@ public class TicketController {
     }
     @PostMapping("v1/tickets/by-acceptor")
     public ResponseEntity<List<TicketInfoResponseDTO>> getTicketsByAcceptorId(
-            @RequestBody TicketInfoRequestDTO request) {
+            @RequestBody TicketListRequestDTO request) {
         List<TicketInfoResponseDTO> tickets = ticketService.findTicketsByAcceptorId(request.getAcceptorId());
         return ResponseEntity.ok(tickets);
     }

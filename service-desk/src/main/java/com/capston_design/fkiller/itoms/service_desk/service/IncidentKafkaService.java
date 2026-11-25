@@ -1,5 +1,6 @@
 package com.capston_design.fkiller.itoms.service_desk.service;
 
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
 import com.capston_design.fkiller.itoms.service_desk.client.TicketKafkaProducer;
 import com.capston_design.fkiller.itoms.service_desk.client.UserKafkaProducer;
 import com.capston_design.fkiller.itoms.service_desk.dto.*;

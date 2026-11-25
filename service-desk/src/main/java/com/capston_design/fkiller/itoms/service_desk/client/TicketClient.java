@@ -1,7 +1,7 @@
 package com.capston_design.fkiller.itoms.service_desk.client;
 
-import com.capston_design.fkiller.itoms.service_desk.dto.CreateTicketRequestDTO;
-import com.capston_design.fkiller.itoms.service_desk.dto.CreateTicketResponseDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
+import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketResponseDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
 
