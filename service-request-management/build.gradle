@@ -13,4 +13,6 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    implementation 'org.springframework.kafka:spring-kafka'
 }
