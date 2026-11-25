@@ -14,6 +14,7 @@ import com.capston_design.fkiller.itoms.ticket_core.domain.entity.TicketStatus;
 import com.capston_design.fkiller.itoms.ticket_core.repository.TicketRepository;
 import com.capston_design.fkiller.itoms.ticket_core.service.dto.error.TicketCompletedEvent;
 import com.capston_design.fkiller.itoms.ticket_core.service.event.RestTicketEventListener;
+import com.capston_design.fkiller.itoms.ticket_core.service.event.KafkaTicketEventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 public class TicketService {
 
     private final RestTicketEventListener restTicketEventListener;
+    private final KafkaTicketEventPublisher kafkaTicketEventPublisher;
     private final TicketRepository ticketRepository;
     private final UserServiceClient userServiceClient;
 
@@ -92,9 +94,9 @@ public class TicketService {
         ticket.updateTicketStatus(TicketStatus.fromCodeName(request.getTicketStatus()));
         ticket.markClosedAt(ClockUtils.parseToLocalDateTime(request.getCompletionTime()));
         ticketRepository.save(ticket);
-        restTicketEventListener.handleTicketCompletedEvent(
-                new TicketCompletedEvent(ticket.getId(), ticket.getIncidentId())
-        );
+        TicketCompletedEvent event = new TicketCompletedEvent(ticket.getId(), ticket.getIncidentId());
+        restTicketEventListener.handleTicketCompletedEvent(event);
+        kafkaTicketEventPublisher.handleTicketCompletedEvent(event);
 
         log.info("[티켓 완료 요청] - ticketId={}, ticketName={}, ticketNowStatus={}, [request time] - {}",
                 request.getTicketId(), request.getTicketName(), request.getTicketStatus(), request.getCompletionTime());
