@@ -1,8 +1,8 @@
 package com.capston_design.fkiller.itoms.ticket_core.domain.entity;
 
-import com.capston_design.fkiller.itoms.ticket_core.common.exception.BaseException;
+import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
+import com.capston_design.fkiller.itoms.ticket_core.common.exception.TicketErrorCode;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum TicketStatus {
@@ -30,7 +30,6 @@ public enum TicketStatus {
                 return status;
             }
         }
-        throw BaseException.createBaseExceptionWithoutDetail(
-                HttpStatus.BAD_REQUEST, "정의되지 않은 TicketStatus 코드명입니다.");
+        throw new GeneralException(TicketErrorCode.UNDEFINED_TICKET_STATUS);
     }
 }

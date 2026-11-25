@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.user_service.controller;
 
-import com.capston_design.fkiller.itoms.user_service.apiPayload.ApiResponse;
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.user_service.converter.UserConverter;
 import com.capston_design.fkiller.itoms.user_service.dto.UserRequest;
 import com.capston_design.fkiller.itoms.user_service.dto.UserResponse;

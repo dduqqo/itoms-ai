@@ -138,6 +138,9 @@ HTTP/1.1 500 Internal Server Error
 
 업무 에러(예: "티켓을 찾을 수 없습니다")는 `COMMON404`가 아니라 **각 서비스의 코드**(`TICKET4041`)를 씁니다.
 
+위 표에 없는 Spring MVC 기본 오류(405 메서드 불일치, 415 미디어 타입 불일치 등)는 `COMMON{HTTP 상태}` 코드와 HTTP 표준 사유를 message로 씁니다.
+예: `{"isSuccess": false, "code": "COMMON405", "message": "Method Not Allowed"}`
+
 ---
 
 ## 4. 사용법 (Java)
@@ -210,7 +213,7 @@ ApiResponse<UserCreateResponseDTO> getRandomRequesterUser();
 | `GlobalExceptionHandler` | 예외를 위 형식으로 바꿔 응답. 자동 설정으로 등록 |
 
 이 모듈에는 **특정 서비스나 업무에 관한 코드를 넣지 않습니다.**
-의존성은 `spring-web`, `jackson`, `spring-boot-autoconfigure`로 한정합니다.
+의존성은 `spring-web`, `spring-webmvc`, `jackson-databind`, `jakarta.validation-api`, `spring-boot-autoconfigure`, `slf4j-api`로 한정합니다.
 나중에 다른 프로젝트에서도 쓸 수 있도록 별도 라이브러리로 분리할 수 있게 하기 위해서입니다.
 
 ---

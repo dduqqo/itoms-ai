@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_desk.service;
 
-import com.capston_design.fkiller.itoms.service_desk.apiPayload.ApiResponse;
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.service_desk.client.TicketClient;
 import com.capston_design.fkiller.itoms.service_desk.client.UserClient;
 import com.capston_design.fkiller.itoms.service_desk.dto.*;

@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_desk.controller;
 
-import com.capston_design.fkiller.itoms.service_desk.apiPayload.ApiResponse;
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.service_desk.converter.IncidentConverter;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentRequest;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentResponse;

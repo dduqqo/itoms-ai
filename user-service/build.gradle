@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(':common:common-response')
     implementation project(':common:common-jpa')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
