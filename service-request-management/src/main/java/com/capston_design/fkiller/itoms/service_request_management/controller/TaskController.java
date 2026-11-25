@@ -1,5 +1,7 @@
 package com.capston_design.fkiller.itoms.service_request_management.controller;
 
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import com.capston_design.fkiller.itoms.common.core.time.ClockHolder;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.CreateTasksRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.response.CreateTasksResponseDTO;
@@ -20,15 +22,15 @@ public class TaskController {
     private final ClockHolder clockHolder;
 
     @PostMapping("/v1/task")
-    public CreateTasksResponseDTO createTask(@RequestBody CreateTasksRequestDTO request){
+    public ResponseEntity<ApiResponse<CreateTasksResponseDTO>> createTask(@RequestBody CreateTasksRequestDTO request){
         TaskResponseInformation taskResponseInformation = taskService.createTask(request);
-        return new CreateTasksResponseDTO(taskResponseInformation);
+        return ResponseEntity.ok(ApiResponse.onSuccess(new CreateTasksResponseDTO(taskResponseInformation)));
     }
 
     @PostMapping("/v1/task/{task_id}/status")
-    public UpdateTaskStatusResponseDTO updateTaskStatus(@PathVariable UUID task_id,
+    public ResponseEntity<ApiResponse<UpdateTaskStatusResponseDTO>> updateTaskStatus(@PathVariable UUID task_id,
                                                         @RequestParam String taskStatus) {
-        return taskService.updateTaskStatus(task_id, taskStatus, clockHolder.now());
+        return ResponseEntity.ok(ApiResponse.onSuccess(taskService.updateTaskStatus(task_id, taskStatus, clockHolder.now())));
     }
 
 }

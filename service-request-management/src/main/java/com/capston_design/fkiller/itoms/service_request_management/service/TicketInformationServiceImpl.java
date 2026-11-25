@@ -1,5 +1,7 @@
 package com.capston_design.fkiller.itoms.service_request_management.service;
 
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
+
 import com.capston_design.fkiller.itoms.contracts.ticket.TicketListRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.client.TicketCoreClient;
 import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
@@ -37,6 +39,7 @@ public class TicketInformationServiceImpl implements TicketInformationService {
     @Transactional
     public List<TicketInformationResponseDTO> getTicketList(String acceptorId) {
         return Optional.ofNullable(ticketCoreClient.getTicketList(new TicketListRequestDTO(acceptorId)))
+                .map(ApiResponse::getResult)
                 .map(ticketMapper::toTicketDomainList)
                 .map(ticketDomainList -> {
                     ticketInformationRepository.saveAll(ticketMapper.toTicketInformationEntityList(ticketDomainList));

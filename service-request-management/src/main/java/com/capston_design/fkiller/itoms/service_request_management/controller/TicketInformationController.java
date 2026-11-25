@@ -1,5 +1,6 @@
 package com.capston_design.fkiller.itoms.service_request_management.controller;
 
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.common.core.time.ClockHolder;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.AssignedTicketListRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.completeTicketRequestDTO;
@@ -21,16 +22,16 @@ public class TicketInformationController {
     private final ClockHolder clockHolder;
 
     @PostMapping("/v1/tickets")
-    public AssignedTicketListResponseDTO getTicketList(@RequestBody AssignedTicketListRequestDTO request) {
+    public ResponseEntity<ApiResponse<AssignedTicketListResponseDTO>> getTicketList(@RequestBody AssignedTicketListRequestDTO request) {
         List<TicketInformationResponseDTO> ticketInformationServiceTicketList =
                 ticketInformationService.getTicketList(request.getChargerId());
-        return new AssignedTicketListResponseDTO(ticketInformationServiceTicketList);
+        return ResponseEntity.ok(ApiResponse.onSuccess(new AssignedTicketListResponseDTO(ticketInformationServiceTicketList)));
     }
 
     @PostMapping("/v1/ticket/complete")
-    public ResponseEntity<Void> completeTicket(@RequestBody completeTicketRequestDTO request) {
+    public ResponseEntity<ApiResponse<Void>> completeTicket(@RequestBody completeTicketRequestDTO request) {
         ticketInformationService.completeTicket(request, clockHolder.now());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.onSuccess(null));
     }
 
 }

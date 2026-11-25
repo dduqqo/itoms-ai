@@ -1,5 +1,6 @@
 package com.capston_design.fkiller.itoms.ticket_core.controller;
 
+import com.capston_design.fkiller.itoms.common.response.ApiResponse;
 import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketRequestDTO;
 import com.capston_design.fkiller.itoms.contracts.ticket.CreateTicketResponseDTO;
 import com.capston_design.fkiller.itoms.contracts.ticket.TicketListRequestDTO;
@@ -21,32 +22,31 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    //TODO: 전역 Response 응답타입 정의
     @PostMapping("/v1/ticket")
-    public CreateTicketResponseDTO createTicket(@RequestBody CreateTicketRequestDTO request) {
+    public ResponseEntity<ApiResponse<CreateTicketResponseDTO>> createTicket(@RequestBody CreateTicketRequestDTO request) {
         UUID ticketId = ticketService.createTicket(request);
-        return new CreateTicketResponseDTO(ticketId, request.getIncidentId());
+        return ResponseEntity.ok(ApiResponse.onSuccess(new CreateTicketResponseDTO(ticketId, request.getIncidentId())));
     }
     @PatchMapping("/v1/ticket/{ticketId}/assign")
-    public ResponseEntity<Void> assignAcceptor(
+    public ResponseEntity<ApiResponse<Void>> assignAcceptor(
             @PathVariable UUID ticketId,
             @RequestBody AssignAcceptorRequestDTO request
     ) {
         ticketService.assignAcceptor(ticketId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.onSuccess(null));
     }
     @PatchMapping("/v1/ticket/{ticketId}")
-    public ResponseEntity<Void> updateTicket(
+    public ResponseEntity<ApiResponse<Void>> updateTicket(
             @PathVariable UUID ticketId,
             @RequestBody UpdateTicketInfoRequestDTO request
     ) {
         ticketService.updateTicketInfo(ticketId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.onSuccess(null));
     }
     @PostMapping("v1/tickets/by-acceptor")
-    public ResponseEntity<List<TicketInfoResponseDTO>> getTicketsByAcceptorId(
+    public ResponseEntity<ApiResponse<List<TicketInfoResponseDTO>>> getTicketsByAcceptorId(
             @RequestBody TicketListRequestDTO request) {
         List<TicketInfoResponseDTO> tickets = ticketService.findTicketsByAcceptorId(request.getAcceptorId());
-        return ResponseEntity.ok(tickets);
+        return ResponseEntity.ok(ApiResponse.onSuccess(tickets));
     }
 }

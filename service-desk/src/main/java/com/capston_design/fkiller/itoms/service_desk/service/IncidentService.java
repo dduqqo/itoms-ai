@@ -62,7 +62,7 @@ public class IncidentService {
                 incident.getId(),
                 new RequesterDTO(user.getId().toString(), user.getName())
         );
-        CreateTicketResponseDTO ticketResponse = ticketClient.createTicket(ticketRequest);
+        CreateTicketResponseDTO ticketResponse = ticketClient.createTicket(ticketRequest).getResult();
 
         //ticketId 저장 후 재저장
         incident.setTicketByID(ticketResponse.getTicketId());
