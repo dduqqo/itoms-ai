@@ -21,11 +21,6 @@ springdoc:
   api-docs:
     path: ${SWAGGER_PATH}/api-docs
 
-cors:
-  allowed:
-    path: ${ALLOWED_PATH}
-    pattern: ${ALLOWED_PATTERN}
-    method: ${ALLOWED_METHOD}
 
 
 itoms:

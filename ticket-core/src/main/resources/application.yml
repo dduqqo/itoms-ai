@@ -47,6 +47,8 @@ springdoc:
   api-docs:
     path: ${SWAGGER_PATH}/api-docs
 
+# 임시: api-gateway가 ticket-core를 라우팅하기 전까지 브라우저에서 직접 테스트하기 위한 설정.
+# 게이트웨이 라우팅을 마치면(7~8단계) CORS를 게이트웨이로 옮기고 이 블록을 지운다.
 cors:
   allowed:
     path: ${ALLOWED_PATH}
