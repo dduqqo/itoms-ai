@@ -45,3 +45,8 @@ cors:
     pattern: ${ALLOWED_PATTERN}
     method: ${ALLOWED_METHOD}
 
+
+itoms:
+  swagger:
+    title: Ticket Core API Document
+    description: Itoms Ticket Core 기능을 수행하는 API document 페이지 입니다

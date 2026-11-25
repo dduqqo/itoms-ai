@@ -9,3 +9,7 @@ spring:
     multipart:
       max-file-size: 10GB
       max-request-size: 10GB
+itoms:
+  swagger:
+    title: Service Desk API Document
+    description: Itoms Service Desk 기능을 수행하는 API document 페이지 입니다

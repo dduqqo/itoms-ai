@@ -27,3 +27,8 @@ cors:
     pattern: ${ALLOWED_PATTERN}
     method: ${ALLOWED_METHOD}
 
+
+itoms:
+  swagger:
+    title: Service Request Management API Document
+    description: Itoms Service Request Management 기능을 수행하는 API document 페이지 입니다
