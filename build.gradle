@@ -48,4 +48,9 @@ configure(subprojects.findAll { it.subprojects.isEmpty() }) {
     tasks.named('test') {
         useJUnitPlatform()
     }
+
+    // 서비스는 실행용 jar(bootJar) 하나만 만든다. -plain.jar가 같이 생기면 Dockerfile의 *.jar가 두 개를 잡는다.
+    plugins.withId('org.springframework.boot') {
+        tasks.named('jar') { enabled = false }
+    }
 }
