@@ -31,7 +31,8 @@
 | ~~Dockerfile~~ | **처리됨** (5단계, 루트 공용 Dockerfile) | FK-70 버전으로 바뀌었고, 서비스 폴더 안에서 빌드하는 방식이라 멀티모듈에서는 빌드되지 않는다. user-service, service-request-management에도 FK-70에서 Dockerfile이 생겼다 |
 | 서비스 폴더 안의 `.github/workflows` | 6단계 | 레포 루트에 있지 않아 GitHub에서 실행되지 않는다 |
 | 기존 운영 배포 방식 | 6단계 | 예전 infra compose는 Docker Hub 이미지(`fkiller14800/itoms_*`)를 받아 실행했다. 새 compose는 소스에서 빌드한다. 운영 서버에 이미지를 올리는 방식은 CI에서 다시 정한다 |
-| 게이트웨이 라우팅 범위 | 7~8단계 | 게이트웨이는 service-desk `/api/incident`, user-service `/api/user` 두 경로만 연결한다. ticket-core, service-request-management는 아직 게이트웨이로 호출할 수 없다 |
+| 게이트웨이 라우팅 범위 | 7~8단계 | 게이트웨이는 service-desk `/api/incident`, user-service `/api/user` 두 경로만 연결한다. ticket-core, service-request-management는 아직 게이트웨이로 호출할 수 없다. 경로를 `/**` 없이 적어서 정확히 일치할 때만 전달한다(`/api/incident/123`, `/api/incident/v1/...`는 통과하지 못함) |
+| 게이트웨이 자체 에러 형식 | 7~8단계 | 뒤쪽 서비스가 꺼져 있는 등 게이트웨이가 직접 돌려주는 에러는 Spring 기본 형식이고 `ApiResponse`가 아니다. 클라이언트가 두 형식을 모두 처리해야 할 수 있다. 게이트웨이 에러도 `ApiResponse`로 맞출지 결정 |
 | 관측 스택 수집 대상 | 7~8단계 | Prometheus는 service-desk, user-service만 수집한다. ticket-core, service-request-management, api-gateway는 대상과 actuator 노출 설정이 없다 |
 | 서비스별 DB 분리 | 미정 | 모든 서비스가 MySQL DB 하나를 함께 쓴다 (기존 운영 compose와 같음). 예전 `test.yaml` 주석에 서비스별 DB로 나누자는 계획이 있었다 |
 | ~~0단계 남은 정리~~ | **처리됨** (5단계) | `.DS_Store`·서비스별 ignore 파일 삭제. 평문 비밀번호는 이미 남아 있지 않았고, compose 비밀값은 `infra/.env`로 분리 |
