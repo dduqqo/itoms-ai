@@ -1,0 +1,163 @@
+# ITOMS 전체 실행.
+#   cp infra/.env.example infra/.env   # 처음 한 번, 값 채우기
+#   docker compose -f infra/docker-compose.yml up -d --build
+# 관측 스택(Loki, Prometheus, Tempo, Grafana)까지:
+#   docker compose -f infra/docker-compose.yml --profile observability up -d --build
+
+name: itoms
+
+x-service-build: &service-build
+  context: ..
+  dockerfile: Dockerfile
+
+# 모든 서비스가 공통으로 받는 값. 서비스끼리는 컨테이너 이름(서비스 이름)으로 찾는다.
+x-service-env: &service-env
+  SPRING_PROFILES_ACTIVE: prod
+  DB_URL: jdbc:mysql://mysql:3306/${DB_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+  DB_USER: ${DB_USER}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DDL_ENV: ${DDL_ENV:-update}
+  SWAGGER_PATH: ${SWAGGER_PATH:-}
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+  MANAGEMENT_TRACING_ENABLED: ${TRACING_ENABLED:-false}
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://tempo:9411/api/v2/spans
+  LOKI_URL: http://loki:3100/loki/api/v1/push
+
+x-service-defaults: &service-defaults
+  restart: unless-stopped
+  depends_on:
+    mysql:
+      condition: service_healthy
+    kafka:
+      condition: service_started
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  # ───────── 애플리케이션 ─────────
+  api-gateway:
+    <<: *service-defaults
+    build: { <<: *service-build, args: { SERVICE: api-gateway } }
+    image: itoms/api-gateway
+    depends_on: [ service-desk, user-service ]
+    environment:
+      <<: *service-env
+      SERVICE_DESK_URL: http://service-desk:8080
+      USER_SERVICE_URL: http://user-service:8081
+    ports: [ "${GATEWAY_PORT:-9000}:9000" ]
+
+  service-desk:
+    <<: *service-defaults
+    build: { <<: *service-build, args: { SERVICE: service-desk } }
+    image: itoms/service-desk
+    environment:
+      <<: *service-env
+      USER_SERVICE_URL: http://user-service:8081
+      TICKET_SERVICE_URL: http://ticket-core:8082
+    ports: [ "${SERVICE_DESK_PORT:-8080}:8080" ]
+
+  user-service:
+    <<: *service-defaults
+    build: { <<: *service-build, args: { SERVICE: user-service } }
+    image: itoms/user-service
+    environment:
+      <<: *service-env
+    ports: [ "${USER_SERVICE_PORT:-8081}:8081" ]
+
+  ticket-core:
+    <<: *service-defaults
+    build: { <<: *service-build, args: { SERVICE: ticket-core } }
+    image: itoms/ticket-core
+    environment:
+      <<: *service-env
+      # 클라이언트가 경로 뒤쪽만 붙여 호출하므로 서비스 경로 접두어까지 넣는다
+      INCIDENT_URL: http://service-desk:8080/api/incident
+      USER_SERVICE_URL: http://user-service:8081
+      ALLOWED_PATH: ${ALLOWED_PATH}
+      ALLOWED_PATTERN: ${ALLOWED_PATTERN}
+      ALLOWED_METHOD: ${ALLOWED_METHOD}
+    ports: [ "${TICKET_CORE_PORT:-8082}:8082" ]
+
+  service-request-management:
+    <<: *service-defaults
+    build: { <<: *service-build, args: { SERVICE: service-request-management } }
+    image: itoms/service-request-management
+    environment:
+      <<: *service-env
+      TICKET_CORE_URL: http://ticket-core:8082/api/ticket-core
+    ports: [ "${SRM_PORT:-8083}:8083" ]
+
+  # ───────── 인프라 ─────────
+  mysql:
+    image: mysql:8.3.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports: [ "${MYSQL_HOST_PORT:-3306}:3306" ]
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # KRaft 단일 노드. 컨테이너끼리는 kafka:19092, 호스트(IDE에서 실행한 서비스)는 localhost:${KAFKA_HOST_PORT}
+  kafka:
+    image: apache/kafka:3.9.1
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://:19092,EXTERNAL://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://localhost:${KAFKA_HOST_PORT:-9092}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    ports: [ "${KAFKA_HOST_PORT:-9092}:9092" ]
+
+  # ───────── 관측 (--profile observability) ─────────
+  loki:
+    profiles: [ observability ]
+    image: grafana/loki:2.9.2
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports: [ "3100:3100" ]
+
+  prometheus:
+    profiles: [ observability ]
+    image: prom/prometheus:v2.46.0
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: [ "9090:9090" ]
+
+  tempo:
+    profiles: [ observability ]
+    image: grafana/tempo:2.2.2
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./docker/tempo/tempo.yml:/etc/tempo.yaml:ro
+      - ./data/tempo:/tmp/tempo
+    ports:
+      - "3110:3200"
+      - "9411:9411"
+
+  grafana:
+    profiles: [ observability ]
+    image: grafana/grafana:10.1.0
+    volumes:
+      - ./docker/grafana:/etc/grafana/provisioning/datasources:ro
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    ports: [ "3000:3000" ]

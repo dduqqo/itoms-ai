@@ -22,13 +22,13 @@ scrape_configs:
   - job_name: 'service-desk'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['host.docker.internal:8080']
+      - targets: ['service-desk:8080']
         labels:
           application: 'Service Desk'
   
   - job_name: 'user-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['host.docker.internal:8081'] #env later
+      - targets: ['user-service:8081']
         labels:
           application: 'User Service'
