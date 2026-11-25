@@ -1,0 +1,11 @@
+# 이미지 빌드에 필요 없는 것. 로컬 빌드 결과(build/)가 들어가면 *.jar 복사가 꼬인다.
+.git
+.gradle
+**/.gradle
+**/build
+.idea
+**/*.iml
+.DS_Store
+.env
+infra
+docs
