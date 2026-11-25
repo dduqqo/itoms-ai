@@ -48,7 +48,12 @@ docker compose -f infra/docker-compose.yml up -d mysql kafka    # Kafka 경로�
 - **ticket-core는 DB가 비어 있지 않으면 두 번째 실행부터 시작에 실패한다.** 시작할 때마다 `data.sql`을 그냥 `INSERT`해서 기본키가 겹친다([pending.md](pending.md) 참고). 고치기 전까지는 `SPRING_SQL_INIT_CONTINUE_ON_ERROR=true`를 같이 넣는다 (시드 데이터가 이미 있으면 넘어감).
 - `ALLOWED_*`는 ticket-core 임시 CORS용이다. 게이트웨이로 CORS를 옮기면(7~8단계) 없어진다.
 
-## 3. IntelliJ에 붙여 넣을 값
+## 3. env 파일로 넣기
+
+`infra/local/`에 `common.env`와 서비스별 `<서비스>.env`를 두고, IntelliJ 실행 설정의 env 파일 항목(Environment variables 옆, 또는 EnvFile 플러그인)에 **`common.env` → `<서비스>.env` 순서로** 지정한다.
+이 폴더는 PC마다 포트·비밀번호가 달라서 커밋하지 않는다(`.gitignore`). 아래 4장 값을 기준으로 만든다.
+
+## 4. IntelliJ에 붙여 넣을 값
 
 Run Configuration → Environment variables 칸에 그대로 붙여 넣는다 (`;`로 구분). `DB_PASSWORD`만 채운다.
 
@@ -77,7 +82,7 @@ DB_URL=jdbc:mysql://localhost:3306/itoms?serverTimezone=Asia/Seoul&characterEnco
 MANAGEMENT_TRACING_ENABLED=false
 ```
 
-## 4. 더 이상 쓰지 않는 값
+## 5. 더 이상 쓰지 않는 값
 
 예전 실행 설정에 남아 있다면 지워도 된다.
 

@@ -42,6 +42,8 @@ out/
 ### 로컬 실행 환경 (비밀값) ###
 .env
 !.env.example
+# IDE 실행용 env 파일 (이 PC의 포트·비밀번호가 들어감)
+/infra/local/
 
 ### Docker 볼륨 데이터 ###
 /infra/**/mysql/
