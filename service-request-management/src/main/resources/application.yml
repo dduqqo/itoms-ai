@@ -1,4 +1,12 @@
 spring:
+  # 비동기(@Async) 스레드 풀. Spring Boot 기본 실행기 설정 (기존 AsyncConfig와 같은 값)
+  task:
+    execution:
+      thread-name-prefix: Async-
+      pool:
+        core-size: 3
+        max-size: 5
+        queue-capacity: 10
   application:
     name: ServiceRequestManagement
   datasource:

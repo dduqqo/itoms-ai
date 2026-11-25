@@ -1,6 +1,7 @@
 package com.capston_design.fkiller.itoms.service_request_management.service;
 
-import com.capston_design.fkiller.itoms.service_request_management.common.exception.BaseException;
+import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
+import com.capston_design.fkiller.itoms.service_request_management.common.exception.SrErrorCode;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.CreateTasksRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.response.TaskResponseInformation;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.response.UpdateTaskStatusResponseDTO;
@@ -14,7 +15,6 @@ import com.capston_design.fkiller.itoms.service_request_management.repository.Ta
 import com.capston_design.fkiller.itoms.service_request_management.service.dto.TaskStatusUpdateEvent;
 import com.capston_design.fkiller.itoms.service_request_management.service.event.rest.RestTaskEventListener;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +44,7 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public UpdateTaskStatusResponseDTO updateTaskStatus(UUID task_id, String taskStatus, String updatedTime) {
         Task task = taskRepository.findById(task_id)
-                .orElseThrow(() -> BaseException.createBaseExceptionWithoutDetail(HttpStatus.BAD_REQUEST,
-                        "유효하지 않은 Task ID 입니다."));
+                .orElseThrow(() -> new GeneralException(SrErrorCode.INVALID_TASK));
         task.updateTaskStatus(TaskStatus.fromCodeName(taskStatus));
         restTaskEventListener.handleTaskStatusUpdateEvent(
                 new TaskStatusUpdateEvent(task_id, task.getTicketId(), task.getTaskName(), taskStatus, updatedTime));

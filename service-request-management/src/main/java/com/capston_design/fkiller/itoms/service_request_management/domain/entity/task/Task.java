@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_request_management.domain.entity.task;
 import com.capston_design.fkiller.itoms.service_request_management.domain.entity.ticket_information.TicketInformation;
-import com.capston_design.fkiller.itoms.service_request_management.domain.entity.base.BaseEntity;
+import com.capston_design.fkiller.itoms.common.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "TASK")
+@AttributeOverride(name = "updatedAt", column = @Column(name = "modified_at"))
 public class Task extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

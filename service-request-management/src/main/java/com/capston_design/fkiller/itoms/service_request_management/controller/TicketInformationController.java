@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_request_management.controller;
 
-import com.capston_design.fkiller.itoms.service_request_management.common.service.ClockHolder;
+import com.capston_design.fkiller.itoms.common.core.time.ClockHolder;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.AssignedTicketListRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.completeTicketRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.response.AssignedTicketListResponseDTO;

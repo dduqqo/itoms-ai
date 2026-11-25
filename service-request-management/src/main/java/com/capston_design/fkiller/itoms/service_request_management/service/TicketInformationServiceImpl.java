@@ -2,7 +2,8 @@ package com.capston_design.fkiller.itoms.service_request_management.service;
 
 import com.capston_design.fkiller.itoms.service_request_management.client.TicketCoreClient;
 import com.capston_design.fkiller.itoms.service_request_management.client.dto.request.TicketListRequestDTO;
-import com.capston_design.fkiller.itoms.service_request_management.common.exception.BaseException;
+import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
+import com.capston_design.fkiller.itoms.service_request_management.common.exception.SrErrorCode;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.request.completeTicketRequestDTO;
 import com.capston_design.fkiller.itoms.service_request_management.controller.dto.response.TicketInformationResponseDTO;
 import com.capston_design.fkiller.itoms.service_request_management.domain.entity.ticket_information.TicketInformation;
@@ -15,7 +16,6 @@ import com.capston_design.fkiller.itoms.service_request_management.service.event
 import com.capston_design.fkiller.itoms.service_request_management.service.event.KafkaTicketStatusPublisher;
 import com.capston_design.fkiller.itoms.service_request_management.validator.TaskValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,16 +48,14 @@ public class TicketInformationServiceImpl implements TicketInformationService {
     @Override
     public TicketDomain getTicketInformation(UUID ticketId) {
         TicketInformation ticketInformation = ticketInformationRepository.findByTicketId(ticketId)
-                .orElseThrow(() -> BaseException
-                        .createBaseExceptionWithoutDetail(HttpStatus.BAD_REQUEST, "유효하지 않은 티켓ID 입니다."));
+                .orElseThrow(() -> new GeneralException(SrErrorCode.INVALID_TICKET));
         return ticketMapper.toTicketDomain(ticketInformation);
     }
 
     @Override
     public void completeTicket(completeTicketRequestDTO request, String completionTime) {
         TicketInformation ticketInformation = ticketInformationRepository.findByTicketId(request.getTicketId())
-                .orElseThrow(() -> BaseException
-                        .createBaseExceptionWithoutDetail(HttpStatus.BAD_REQUEST, "유효하지 않은 티켓ID 입니다."));
+                .orElseThrow(() -> new GeneralException(SrErrorCode.INVALID_TICKET));
 
         if(taskValidator.checkAllTaskCompleted(request.getTicketId())){
             ticketInformation.updateTicketStatus(TicketStatus.COMPLETE_EXECUTION);
@@ -67,8 +65,7 @@ public class TicketInformationServiceImpl implements TicketInformationService {
             kafkaTicketStatusPublisher.handleTicketStatusUpdateEvent(event);
             ticketInformationRepository.save(ticketInformation);
         } else {
-            throw BaseException.createBaseExceptionWithoutDetail(
-                    HttpStatus.BAD_REQUEST, "해당 티켓에 할당된 작업이 모두 완료되지 않았습니다.");
+            throw new GeneralException(SrErrorCode.TASKS_NOT_COMPLETED);
         }
     }
 

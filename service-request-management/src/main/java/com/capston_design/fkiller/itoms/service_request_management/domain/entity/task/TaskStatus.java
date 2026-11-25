@@ -1,8 +1,8 @@
 package com.capston_design.fkiller.itoms.service_request_management.domain.entity.task;
 
-import com.capston_design.fkiller.itoms.service_request_management.common.exception.BaseException;
+import com.capston_design.fkiller.itoms.common.response.exception.GeneralException;
+import com.capston_design.fkiller.itoms.service_request_management.common.exception.SrErrorCode;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum TaskStatus {
@@ -26,8 +26,7 @@ public enum TaskStatus {
                 return status;
             }
         }
-        throw BaseException.createBaseExceptionWithoutDetail(HttpStatus.BAD_REQUEST,
-                "정의되지 않은 TaskStatus 코드입니다.");
+        throw new GeneralException(SrErrorCode.UNDEFINED_TASK_STATUS_CODE);
     }
 
     public static TaskStatus fromCodeName(String codeName) {
@@ -36,7 +35,6 @@ public enum TaskStatus {
                 return status;
             }
         }
-        throw BaseException.createBaseExceptionWithoutDetail(HttpStatus.BAD_REQUEST,
-                "정의되지 않은 TaskStatus 코드명입니다.");
+        throw new GeneralException(SrErrorCode.UNDEFINED_TASK_STATUS_NAME);
     }
 }
