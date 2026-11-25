@@ -34,6 +34,7 @@
 | 게이트웨이 라우팅 범위 | 7~8단계 | 게이트웨이는 service-desk `/api/incident`, user-service `/api/user` 두 경로만 연결한다. ticket-core, service-request-management는 아직 게이트웨이로 호출할 수 없다. 경로를 `/**` 없이 적어서 정확히 일치할 때만 전달한다(`/api/incident/123`, `/api/incident/v1/...`는 통과하지 못함) |
 | 게이트웨이 자체 에러 형식 | 7~8단계 | 뒤쪽 서비스가 꺼져 있는 등 게이트웨이가 직접 돌려주는 에러는 Spring 기본 형식이고 `ApiResponse`가 아니다. 클라이언트가 두 형식을 모두 처리해야 할 수 있다. 게이트웨이 에러도 `ApiResponse`로 맞출지 결정 |
 | 관측 스택 수집 대상 | 7~8단계 | Prometheus는 service-desk, user-service만 수집한다. ticket-core, service-request-management, api-gateway는 대상과 actuator 노출 설정이 없다 |
+| **ticket-core 재시작 실패 (원본 버그)** | 미정 | `sql.init.mode: always`라 시작할 때마다 `data.sql`을 `INSERT`한다. DB에 데이터가 남아 있으면(`DDL_ENV=update`) 기본키 중복으로 **시작에 실패**한다. compose에서도 ticket-core 컨테이너를 재시작하면 같은 이유로 계속 재시작된다. 임시 회피: `SPRING_SQL_INIT_CONTINUE_ON_ERROR=true`. 고칠 방법: `INSERT IGNORE`로 바꾸기, 시드를 local에서만 넣기 등. 운영에 시드 데이터가 필요한지 확인 필요 |
 | 서비스별 DB 분리 | 미정 | 모든 서비스가 MySQL DB 하나를 함께 쓴다 (기존 운영 compose와 같음). 예전 `test.yaml` 주석에 서비스별 DB로 나누자는 계획이 있었다 |
 | ~~0단계 남은 정리~~ | **처리됨** (5단계) | `.DS_Store`·서비스별 ignore 파일 삭제. 평문 비밀번호는 이미 남아 있지 않았고, compose 비밀값은 `infra/.env`로 분리 |
 | ~~깨진 테스트~~ | **처리됨** (6단계 전, H2 테스트 프로필 + `TicketTest` 수정. `./gradlew build` 통과) | DB를 쓰는 서비스 4곳의 `contextLoads`는 DB·환경변수가 없으면 실패한다(테스트용 DB 설정 필요: H2 또는 Testcontainers). ticket-core `TicketTest`는 테스트 코드 버그(랜덤 UUID를 고정 문자열과 비교). 전환 전부터 깨져 있었다 ([build-baseline.md](build-baseline.md)) |
