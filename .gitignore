@@ -35,3 +35,14 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### macOS ###
+.DS_Store
+
+### 로컬 실행 환경 (비밀값) ###
+.env
+!.env.example
+
+### Docker 볼륨 데이터 ###
+/infra/**/mysql/
+/infra/**/data/
