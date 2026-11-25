@@ -1,0 +1,14 @@
+plugins {
+    id 'java-library'
+}
+
+// 로그(Loki)·트레이스(Zipkin)·메트릭(Prometheus) 의존성 묶음. 모든 서비스가 같은 구성을 쓴다.
+dependencies {
+    api 'org.springframework.boot:spring-boot-starter-actuator'
+    api 'org.springframework.boot:spring-boot-starter-aop'
+    api 'io.micrometer:micrometer-tracing-bridge-brave'
+    api 'io.zipkin.reporter2:zipkin-reporter-brave'
+    api libs.loki.logback.appender
+    api libs.datasource.micrometer
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+}

@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(':common:common-observability')
     implementation project(':common:common-web')
     implementation project(':common:common-response')
     implementation project(':common:common-jpa')
@@ -10,16 +11,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation libs.loki.logback.appender
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
-    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
-    implementation libs.datasource.micrometer
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
-
 }

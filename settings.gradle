@@ -2,7 +2,8 @@ rootProject.name = 'itoms-ai'
 
 include 'common:common-jpa',
         'common:common-response',
-        'common:common-web'
+        'common:common-web',
+        'common:common-observability'
 
 include 'api-gateway',
         'service-desk',
