@@ -1,0 +1,8 @@
+plugins {
+    id 'java-library'
+}
+
+// 업무·웹·DB와 무관한 범용 코드. 어느 서비스(api-gateway 포함)에서도 부담 없이 쓸 수 있게 의존성을 두지 않는다.
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+}

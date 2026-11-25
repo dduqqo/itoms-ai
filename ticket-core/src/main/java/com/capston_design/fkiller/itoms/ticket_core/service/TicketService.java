@@ -5,7 +5,7 @@ import com.capston_design.fkiller.itoms.ticket_core.common.exception.TicketError
 import com.capston_design.fkiller.itoms.ticket_core.client.IncidentClient;
 import com.capston_design.fkiller.itoms.ticket_core.client.UserServiceClient;
 import com.capston_design.fkiller.itoms.ticket_core.client.dto.response.CreatorInfoResponseDTO;
-import com.capston_design.fkiller.itoms.ticket_core.common.util.ClockUtils;
+import com.capston_design.fkiller.itoms.common.core.time.ClockUtils;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.request.*;
 import com.capston_design.fkiller.itoms.ticket_core.common.ticket_status.annotation.UpdateTicketStatus;
 import com.capston_design.fkiller.itoms.ticket_core.controller.dto.response.TicketInfoResponseDTO;
