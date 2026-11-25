@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.ticket_core.domain.entity;
 
-import com.capston_design.fkiller.itoms.ticket_core.domain.entity.base.BaseEntity;
+import com.capston_design.fkiller.itoms.common.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +12,7 @@ import java.util.UUID;
 @EntityListeners(TicketEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "ticket")
+@AttributeOverride(name = "updatedAt", column = @Column(name = "modified_at"))
 public class Ticket extends BaseEntity {
 
     @Id

@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.spring.dependency.management) apply false
 }
 
-subprojects {
+// common 같은 폴더용 프로젝트는 빼고, 실제 모듈에만 적용한다.
+configure(subprojects.findAll { it.subprojects.isEmpty() }) {
     apply plugin: 'java'
     apply plugin: 'io.spring.dependency-management'
 

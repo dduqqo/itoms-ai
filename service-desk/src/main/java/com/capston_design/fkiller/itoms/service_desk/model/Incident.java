@@ -1,6 +1,6 @@
 package com.capston_design.fkiller.itoms.service_desk.model;
 
-import com.capston_design.fkiller.itoms.service_desk.model.common.BaseEntity;
+import com.capston_design.fkiller.itoms.common.jpa.BaseEntity;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Priority;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Status;
 import jakarta.persistence.*;
