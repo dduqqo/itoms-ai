@@ -3,7 +3,7 @@
 멀티모듈 전환(0~4단계) 중에 결정을 미루거나, 다음 단계로 넘기거나, 직접 확인하지 못한 항목을 모은 문서입니다.
 처리하면 이 문서에서 지우거나 `처리됨`으로 표시합니다.
 
-- 기준일: 2026-11-25 (5단계 반영)
+- 기준일: 2026-11-26 (6단계 반영)
 - 계획서: `ITOMS_MULTIMODULE_PLAN.md` (레포 밖, 상위 폴더)
 
 ---
@@ -29,8 +29,8 @@
 | ticket-core 임시 CORS | 7~8단계 | 게이트웨이가 ticket-core를 라우팅하기 전까지 브라우저에서 직접 테스트하려고 둔 설정. 게이트웨이로 CORS를 옮긴 뒤 `cors.allowed.*`와 쓰지 않게 된 `CorsAutoConfiguration`을 지운다 |
 | ~~로컬 기본 포트 충돌~~ | **처리됨** (5단계) | FK-70 병합 후 service-desk, ticket-core, user-service, service-request-management가 모두 기본 8080. 동시에 띄우면 충돌한다 |
 | ~~Dockerfile~~ | **처리됨** (5단계, 루트 공용 Dockerfile) | FK-70 버전으로 바뀌었고, 서비스 폴더 안에서 빌드하는 방식이라 멀티모듈에서는 빌드되지 않는다. user-service, service-request-management에도 FK-70에서 Dockerfile이 생겼다 |
-| 서비스 폴더 안의 `.github/workflows` | 6단계 | 레포 루트에 있지 않아 GitHub에서 실행되지 않는다 |
-| 기존 운영 배포 방식 | 6단계 | 예전 infra compose는 Docker Hub 이미지(`fkiller14800/itoms_*`)를 받아 실행했다. 새 compose는 소스에서 빌드한다. 운영 서버에 이미지를 올리는 방식은 CI에서 다시 정한다 |
+| ~~서비스 폴더 안의 `.github/workflows`~~ | **처리됨** (6단계, 루트 `.github/workflows/ci.yml`로 대체. 이슈·PR 템플릿도 루트로 옮김) | 레포 루트에 있지 않아 GitHub에서 실행되지 않는다 |
+| 운영 서버 배포 | 미정 | 6단계에서 이미지 저장소는 GHCR(`ghcr.io/dduqqo/itoms-*`)로 정했다. main에 푸시되면 바뀐 서비스 이미지가 올라간다. 남은 것: 운영 서버가 이 이미지를 받아 실행하는 compose(지금 compose는 소스에서 빌드), 자동 배포 여부. GHCR 패키지는 처음 올라가면 비공개라, 로그인 없이 받으려면 Packages 설정에서 공개로 바꾼다 |
 | 게이트웨이 라우팅 범위 | 7~8단계 | 게이트웨이는 service-desk `/api/incident`, user-service `/api/user` 두 경로만 연결한다. ticket-core, service-request-management는 아직 게이트웨이로 호출할 수 없다. 경로를 `/**` 없이 적어서 정확히 일치할 때만 전달한다(`/api/incident/123`, `/api/incident/v1/...`는 통과하지 못함) |
 | 게이트웨이 자체 에러 형식 | 7~8단계 | 뒤쪽 서비스가 꺼져 있는 등 게이트웨이가 직접 돌려주는 에러는 Spring 기본 형식이고 `ApiResponse`가 아니다. 클라이언트가 두 형식을 모두 처리해야 할 수 있다. 게이트웨이 에러도 `ApiResponse`로 맞출지 결정 |
 | 관측 스택 수집 대상 | 7~8단계 | Prometheus는 service-desk, user-service만 수집한다. ticket-core, service-request-management, api-gateway는 대상과 actuator 노출 설정이 없다 |
