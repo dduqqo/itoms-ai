@@ -13,7 +13,10 @@ RUN --mount=type=cache,target=/root/.gradle \
 
 FROM eclipse-temurin:21-jre
 ENV TZ=Asia/Seoul
+# 앱은 root가 아닌 일반 사용자로 실행한다
+RUN useradd --system --no-create-home --shell /usr/sbin/nologin app
 WORKDIR /app
 ARG SERVICE
 COPY --from=build /workspace/${SERVICE}/build/libs/*.jar app.jar
+USER app
 ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-Dfile.encoding=UTF-8", "-jar", "/app/app.jar"]
